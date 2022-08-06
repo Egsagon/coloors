@@ -1,0 +1,12 @@
+{
+    "name": "Eww widgets",
+    "type": "file-placeholder",
+    "active": true,
+
+    "color-type": "hex",
+    "location": "/home/egsagon/.config/eww/colors.yuck",
+
+    "value": "(defvar c-com-fg \"#COM_FG\")\n(defvar c-fg \"#FG\" )\n(defvar c-com-acc \"#COM_ACC\")\n(defvar c-accent \"#ACCENT\")\n(defvar c-com-bg \"#COM_BG\")\n(defvar c-bg \"#BG\")",
+
+    "on_done": ""
+}

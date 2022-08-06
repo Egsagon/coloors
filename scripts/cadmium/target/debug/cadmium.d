@@ -1,0 +1,1 @@
+/home/egsagon/colors/scripts/cadmium/target/debug/cadmium: /home/egsagon/colors/scripts/cadmium/src/init.rs /home/egsagon/colors/scripts/cadmium/src/lib.rs /home/egsagon/colors/scripts/cadmium/src/main.rs /home/egsagon/colors/scripts/cadmium/src/palette.rs

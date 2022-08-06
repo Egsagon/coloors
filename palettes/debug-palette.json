@@ -1,0 +1,12 @@
+{
+    "name":     "Debug palette",
+    "auth":     "egsagon",
+    "desc":     "Palette for debuging",
+    
+    "com_fg":   "000",
+    "fg":       "888",
+    "com_acc":  "0f0",
+    "accent":   "f00",
+    "com_bg":   "f0f",
+    "bg":       "fff"
+}

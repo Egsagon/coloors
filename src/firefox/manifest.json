@@ -1,0 +1,33 @@
+{
+  "manifest_version": 2,
+  "version": "1.0",
+  "name": "dynamic-theme",
+  "theme": {
+    "images": {
+      "additional_backgrounds": [
+        "images/bg-009-f069b97f439938a011297c84464f0df6.svg"
+      ]
+    },
+    "properties": {
+      "additional_backgrounds_alignment": [
+        "top"
+      ],
+      "additional_backgrounds_tiling": [
+        "repeat"
+      ]
+    },
+    "colors": {
+      "toolbar": "#F2F9F1",
+      "toolbar_text": "#656565",
+      "frame": "#F2F9F1",
+      "tab_background_text": "#808782",
+      "toolbar_field": "#F2F9F1",
+      "toolbar_field_text": "#656565",
+      "tab_line": "#656565",
+      "popup": "#D7EDD4",
+      "popup_text": "#656565",
+      "ntp_background": "#F2F9F1",
+      "tab_loading": "#656565"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Visual-studio-code",
+    "type": "file-overwrite",
+    "active": true,
+
+    "color-type": "hex",
+    "location": "/home/egsagon/.config/Code - OSS/User/settings.json",
+    
+    "exceptions": [],
+    "on_done": ""
+}

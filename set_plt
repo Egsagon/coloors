@@ -1,0 +1,117 @@
+#!/usr/bin/python3
+
+"""
+
+    !/ In case some apps are unactive, need to refresh
+    back to current to make them sync with the new color.
+
+"""
+
+import os
+import sys
+import json
+import subprocess
+import PIL.ImageColor
+
+
+# === Settings === #
+DIR = '/home/egsagon/colors'
+APPS = os.listdir(f'{DIR}/apps')
+PALETTES = os.listdir(f'{DIR}/palettes')
+PALETTES_NAMES = [p.split('.')[0] for p in PALETTES]
+PALETTE_KEYS = ['com_fg', 'fg', 'com_acc', 'accent', 'com_bg', 'bg']
+# ================ #
+
+
+def hex_to_rgb(color, mode):
+    rgb = PIL.ImageColor.getcolor(color, mode)
+    return f'rgb{rgb}' if len(rgb) == 3 else f'rgba{rgb}'
+
+
+def get_palette_colors(_json):
+    """Returns only the colors from a palette."""
+    items = filter(lambda i: i[0] in PALETTE_KEYS, _json.items())
+    return {k: v for k, v in list(items)}
+
+
+# === Ask the palette to change with === #
+if len(sys.argv) == 1:
+    name = subprocess.run(["gum", "choose"] + PALETTES_NAMES,
+                          stdout=subprocess.PIPE, text=True)
+    
+    name = name.stdout.strip()
+    
+    print(name)
+
+else:
+    name = sys.argv[1]
+    
+    # Error protection
+    if not name in PALETTES_NAMES: print('Palette not found'); exit()
+
+print(f'# === Applying theme {name}... === #')
+
+
+# === Save the current palette === #
+current = json.load(open('./current.json', 'r'))
+old_colors = get_palette_colors(current)
+
+nxt_palette_raw = open(f'./palettes/{name}.json', 'r').read()
+new_colors = get_palette_colors(json.loads(nxt_palette_raw))
+
+open('./current.json', 'w').write(nxt_palette_raw)
+
+
+# === Apply to each application === #
+for app in APPS:
+    _app = json.load(open(f'{DIR}/apps/{app}', 'r'))
+    
+    if not _app['active']: continue
+    
+    print(f"Changing theme of {_app['name']}")
+    
+    if _app['type'] == 'file-overwrite':
+        
+        # Open file
+        data = open(_app['location'], 'r').read()
+        
+        # Replace each instance of the old color with the new one
+        for key in PALETTE_KEYS:
+            
+            cur_color = new_colors[key]
+            fetch_color = old_colors[key]
+            
+            if _app['color-type'] == 'hex': pass
+            elif _app['color-type'] == 'rgb':
+                fetch_color = hex_to_rgb(f'#{fetch_color}', 'RGB')
+                cur_color = hex_to_rgb(f'#{cur_color}', 'RGB')
+            
+            print(fetch_color, '->', cur_color)
+            
+            data = data.replace(fetch_color, cur_color)
+        
+        # Save the file
+        open(_app['location'], 'w').write(data)
+        
+        # Execute file command
+        if _app['on_done']: os.popen(_app['on_done'])
+    
+    elif _app['type'] == 'file-placeholder':
+        data = _app['value']
+        
+        for key in PALETTE_KEYS:
+            
+            cur_color = new_colors[key]
+            
+            if _app['color-type'] == 'hex': pass
+            elif _app['color-type'] == 'rgb':
+                cur_color = hex_to_rgb(f'#{cur_color}', 'RGB')
+            
+            data = data.replace(key.upper(), cur_color)
+        
+        # Save the file
+        open(_app['location'], 'w').write(data)
+        
+        # Execute file command
+        if _app['on_done']: os.popen(_app['on_done'])
+

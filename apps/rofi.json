@@ -1,0 +1,11 @@
+{
+    "name": "Rofi",
+    "type": "file-overwrite",
+    "active": true,
+
+    "color-type": "hex",
+    "location": "/home/egsagon/.config/rofi/colors.rasi",
+
+    "exceptions": [],
+    "on_done": ""
+}

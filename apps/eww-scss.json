@@ -1,0 +1,12 @@
+{
+    "name": "Eww widgets stylesheet",
+    "type": "file-placeholder",
+    "active": true,
+
+    "color-type": "hex",
+    "location": "/home/egsagon/.config/eww/colors.scss",
+
+    "value": "$c-com-fg: #COM_FG;\n$c-fg: #FG;\n$c-com-acc: #COM_ACC;\n$c-accent: #ACCENT;\n$c-com-fg: #COM_FG;\n$c-bg: #BG;\n",
+
+    "on_done": ""
+}

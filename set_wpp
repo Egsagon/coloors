@@ -1,0 +1,78 @@
+#!/usr/bin/python3
+
+import os
+import sys
+import json
+from random import randint
+
+WALLS = os.listdir('./wallpapers')
+PALETTE_KEYS = ['com_fg', 'fg', 'com_acc', 'accent', 'com_bg', 'bg']
+
+
+def set_wall(name): os.popen(f'feh --bg-fill {name}')
+
+def write_palette():
+    path = f'./wallpapers/{choice}'
+    
+    # Create current.palette using the current.json palette
+    data = json.load(open('./current.json', 'r'))
+    
+    plt = open('./scripts/current.palette', 'w')
+    
+    for i, key in enumerate(PALETTE_KEYS):
+        plt.write(f'#{data[key]}')
+        if i != len(PALETTE_KEYS) -1: plt.write('\n')
+    plt.close()
+
+choice = None
+
+# Choose random wallpaper
+if '--random' in sys.argv or '-r' in sys.argv:
+    choice = WALLS[randint(0, len(WALLS) - 1)]
+
+else: choice = sys.argv[1]
+
+
+# Change scheme with ImageTheming
+if '--scheme' in sys.argv or '-s' in sys.argv:
+    path = f'./wallpapers/{choice}'
+    
+    # Create current.palette using the current.json palette
+    data = json.load(open('./current.json', 'r'))
+    
+    plt = open('./scripts/current.palette', 'w')
+    
+    for i, key in enumerate(PALETTE_KEYS):
+        plt.write(f'#{data[key]}')
+        if i != len(PALETTE_KEYS) -1: plt.write('\n')
+    plt.close()
+    
+    # Call ImageTheming
+    os.system(f'java -jar ./scripts/img_theming.jar {path} -t=./scripts/current.palette -o=./')
+    
+    # Rename the new image
+    ext = path.split('.')[-1]
+    name = path.split('/')[-1]
+    new_path = './' +name.replace(f'.{ext}', '') + '-custom.' + ext
+    
+    os.rename(new_path, f'current.{ext}')
+    
+    # Change ext
+    if ext != 'png':
+        print('changing ext from', ext, 'to png')
+        os.system(f'mogrify -format png ./current.{ext}')
+        os.remove(f'./current.{ext}') # Remove old .jpg
+    
+    # Change choice to apply wallpaper
+    choice = f'current.png'
+
+
+# Change colors with cadmium
+if "--colors" in sys.argv or '-c' in sys.argv:
+    write_palette()
+    path = f'./wallpapers/{choice}'
+    
+    os.system(f'./scripts/cadmium/target/debug/cadmium --input {path} --palette ./scripts/current.palette --output ./current.png')    
+    choice = './current.png'
+
+set_wall(choice)
